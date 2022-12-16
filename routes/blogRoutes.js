@@ -1,7 +1,6 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import BlogModel from "../models/blogs/blogModel.js";
-import { isAuth } from "../utils.js";
 import { v2 as cloudinary } from "cloudinary";
 import imageUpload from "../configurations/imageUpload.js";
 import { cloudinaryConfig } from "../configurations/cloudinaryConfig.js";
@@ -79,7 +78,7 @@ blogRoutes.post(
         .send({ status: true, message: "goal recorded", data: blog });
     } catch (error) {
       res
-        .status(301)
+        .status(400)
         .send({ status: false, message: "goal not recorded", data: error });
     }
   })
