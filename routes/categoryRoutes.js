@@ -10,7 +10,7 @@ import { uploadImageCloudinary } from "../configurations/uploadCloudinary.js";
 const categoryRoutes = express.Router();
 
 categoryRoutes.post(
-  "/new-category",
+  "/new",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
@@ -73,7 +73,7 @@ categoryRoutes.post(
 );
 
 categoryRoutes.get(
-  "/all-categories",
+  "/all",
   expressAsyncHandler(async (req, res) => {
     const categories = await CategoryModel.Category.find();
 
@@ -88,7 +88,7 @@ categoryRoutes.get(
 );
 
 categoryRoutes.put(
-  "/update-category",
+  "/update",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
@@ -135,7 +135,7 @@ categoryRoutes.put(
 );
 
 categoryRoutes.delete(
-  "/delete-category",
+  "/delete",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();

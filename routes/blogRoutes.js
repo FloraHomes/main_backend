@@ -10,7 +10,7 @@ import { uploadImageCloudinary } from "../configurations/uploadCloudinary.js";
 const blogRoutes = express.Router();
 
 blogRoutes.post(
-  "/new-blog",
+  "/new",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
@@ -76,7 +76,7 @@ blogRoutes.post(
 );
 
 blogRoutes.get(
-  "/all-blogs",
+  "/all",
   expressAsyncHandler(async (req, res) => {
     const currentPage = req.query.currentpage;
     const perPage = req.query.perpage;
@@ -102,7 +102,7 @@ blogRoutes.get(
 );
 
 blogRoutes.get(
-  "/blog-details",
+  "/details",
   expressAsyncHandler(async (req, res) => {
     const slug = req.query.slug;
     if (!slug) {
@@ -116,7 +116,7 @@ blogRoutes.get(
   })
 );
 blogRoutes.put(
-  "/update-blog",
+  "/update",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
@@ -161,7 +161,7 @@ blogRoutes.put(
 );
 
 blogRoutes.delete(
-  "/delete-blog",
+  "/delete",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
