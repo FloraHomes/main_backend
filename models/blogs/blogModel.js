@@ -3,6 +3,7 @@ import Joi from "joi";
 
 const blogSchema = new mongoose.Schema({
   title: { type: String, unique: true },
+  slug: { type: String, unique: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   categories: { type: Array, required: true },
   details: { type: String, required: true },

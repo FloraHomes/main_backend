@@ -1,45 +1,42 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
-import BlogModel from "../models/blogs/blogModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import imageUpload from "../configurations/imageUpload.js";
 import { cloudinaryConfig } from "../configurations/cloudinaryConfig.js";
 import slugify from "slugify";
+import CategoryModel from "../models/blogs/categoryModel.js";
 import { uploadImageCloudinary } from "../configurations/uploadCloudinary.js";
 
-const blogRoutes = express.Router();
+const categoryRoutes = express.Router();
 
-blogRoutes.post(
-  "/new-blog",
+categoryRoutes.post(
+  "/new-category",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
-    const { title, categories, details, author } = req?.body;
-
-    const alreadyExist = await BlogModel.Blog.findOne({ title: title });
+    const { title, details, addedBy, colorCode } = req?.body;
     if (!req?.file) {
       res.status(400).send({ error: "Please upload cover image" });
     }
+    const alreadyExist = await CategoryModel.Category.findOne({ title: title });
     if (alreadyExist) {
       return res
         .status(400)
-        .send({ message: "Blog with this name already exists." });
+        .send({ message: "Category with this name already exists." });
     }
     const slug = slugify(title);
 
     const imageUploadResult = await uploadImageCloudinary(req);
 
-    console.log({ imageUploadResult });
-
     if (!imageUploadResult?.secure_url) {
       res.status(400).send({ error: "Image upload failed" });
     }
 
-    const { error } = BlogModel.BlogValidations.validate({
+    const { error } = CategoryModel.CategoryValidations.validate({
       title,
-      categories,
       details,
       image: imageUploadResult.secure_url,
+      color_code: colorCode,
     });
 
     if (error?.details?.length > 0) {
@@ -52,80 +49,55 @@ blogRoutes.post(
         .send({ message: "Please send valid data", errors: tempErrors });
     }
 
-    const newBlog = new BlogModel.Blog({
+    const newCategory = new CategoryModel.Category({
       slug,
       title,
-      categories,
       details,
       image: imageUploadResult.secure_url,
-      author,
+      addedBy,
+      color_code: colorCode,
     });
     try {
-      const blog = await newBlog.save();
+      const category = await newCategory.save();
       res.status(201).send({
         status: true,
-        message: "New blog added successfully",
-        data: blog,
+        message: "New category added successfully",
+        data: category,
       });
     } catch (error) {
       res
         .status(400)
-        .send({ status: false, error: "Blog not added", data: error });
+        .send({ status: false, error: "Category not added", data: error });
     }
   })
 );
 
-blogRoutes.get(
-  "/all-blogs",
+categoryRoutes.get(
+  "/all-categories",
   expressAsyncHandler(async (req, res) => {
-    const currentPage = req.query.currentpage;
-    const perPage = req.query.perpage;
-    if (!currentPage) {
-      return res.status(400).send({ error: "please send page num" });
-    }
-    if (!perPage) {
-      return res.status(400).send({ error: "please send blogs per page" });
-    }
-    const blogCount = await BlogModel.Blog.find().countDocuments();
-    const blogs = await BlogModel.Blog.find()
-      .skip((currentPage - 1) * perPage)
-      .limit(perPage);
-    if (!blogs) {
+    const categories = await CategoryModel.Category.find();
+
+    if (!categories) {
       return res.status(400).send({ error: "Something went wrong" });
     }
     return res.status(200).send({
       message: "success",
-      blogs,
-      totalPages: Math.ceil(blogCount / perPage),
+      categories,
     });
   })
 );
 
-blogRoutes.get(
-  "/blog-details",
-  expressAsyncHandler(async (req, res) => {
-    const slug = req.query.slug;
-    if (!slug) {
-      return res.status(404).send({ error: "Page not found" });
-    }
-    const data = await BlogModel.Blog.findOne({ slug: slug });
-    if (!data) {
-      return res.status(404).send({ error: "Page not found" });
-    }
-    return res.status(200).send({ message: "success", data });
-  })
-);
-blogRoutes.put(
-  "/update-blog",
+categoryRoutes.put(
+  "/update-category",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
-    const { id, title, categories, details } = req?.body;
-    const data = await BlogModel.Blog.findOne({ _id: id });
+    const { id, title, addedBy, colorCode, details } = req?.body;
+    const data = await CategoryModel.Category.findOne({ _id: id });
     if (!data) {
       return res
         .status(400)
-        .send({ error: "Blog with this id does not exist", data: { id } });
+        .send({ error: "Category with this id does not exist", data: { id } });
     }
 
     let newImageURL = {};
@@ -139,20 +111,22 @@ blogRoutes.put(
       $set: {
         title,
         slug,
-        categories,
+        color_code: colorCode,
         details,
         image: newImageURL?.secure_url ? newImageURL.secure_url : data.image,
         updated_at: Date.now(),
       },
     };
-    const result = await BlogModel.Blog.updateOne(
+    const result = await CategoryModel.Category.updateOne(
       { _id: id },
       updateDoc,
       options
     );
     console.log(result);
     if (result.matchedCount === 1) {
-      return res.status(200).send({ message: "Blog updated successfully." });
+      return res
+        .status(200)
+        .send({ message: "Category updated successfully." });
     } else
       return res
         .status(400)
@@ -160,15 +134,15 @@ blogRoutes.put(
   })
 );
 
-blogRoutes.delete(
-  "/delete-blog",
+categoryRoutes.delete(
+  "/delete-category",
   imageUpload().single("image"),
   expressAsyncHandler(async (req, res) => {
     cloudinaryConfig();
     const { id } = req?.body;
-    const data = await BlogModel.Blog.findOne({ _id: id });
+    const data = await CategoryModel.Category.findOne({ _id: id });
     if (!data) {
-      return res.status(400).send({ error: "Blog not found" });
+      return res.status(400).send({ error: "Category not found" });
     }
     let del = await cloudinary.uploader.destroy(
       data.image.split("/")[data.image.split("/").length - 1].split(".")[0]
@@ -178,13 +152,13 @@ blogRoutes.delete(
 
     const query = { _id: id };
 
-    const result = await BlogModel.Blog.deleteOne(query);
+    const result = await CategoryModel.Category.deleteOne(query);
     if (result.deletedCount === 1) {
-      return res.status(200).send({ message: "Blog deleted successfully" });
+      return res.status(200).send({ message: "Category deleted successfully" });
     } else {
       return res.status(400).send({ error: "Failed to delete" });
     }
   })
 );
 
-export default blogRoutes;
+export default categoryRoutes;

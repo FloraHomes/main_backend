@@ -10,9 +10,9 @@ import bodyParser from "body-parser";
 import propertyRoutes from "./routes/propertyRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 const app = express();
-
 dotenv.config();
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -37,6 +37,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/goal", goalRoutes);
 app.use("/api/blog", blogRoutes);
+app.use("/api/category", categoryRoutes);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
