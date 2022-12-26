@@ -47,3 +47,12 @@ const port = process.env.PORT || 7000;
 app.listen(port, () => {
   console.log(`serve at http:localhost:${port}`);
 });
+
+export const getBaseUrl = (path) => {
+  return new URL(path, import.meta.url);
+}
+
+const filePath = getBaseUrl(`attachment/jjfhfhfh.pdf`)
+
+console.log(filePath.pathname.substring(1));
+

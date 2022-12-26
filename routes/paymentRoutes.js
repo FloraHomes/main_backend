@@ -1,7 +1,12 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Payment from "../models/paymentModel.js";
-import { isAuth } from "../utils.js";
+import { amountFormat, isAuth, mailgun, recieptEmailTemplate, simpleDateString } from "../utils.js";
+import pdf from "pdf-creator-node"
+import fs from "fs"
+import { getBaseUrl } from "../server.js";
+import User from "../models/userModel.js";
+
 
 
 const paymentRoutes = express.Router();
@@ -18,16 +23,108 @@ paymentRoutes.post(
         property: req?.body?.propertyId,
         user: req.body.userId,
       });
-  
+
+      const paySummary = await Payment.aggregate([
+        {
+          $match: {
+            user: req.user._id 
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            prevUnits: { $sum: '$purchasedUnit' },
+
+          },
+        },
+        
+      ]);
+
+
+      const payment = await newPayment.save();
+      await payment.populate('property', 'name')
+      const user = await User.findOne({_id: req.body.userId})
+
+      console.log('email', user.email);
+
    
-      try {
-        const payment = await newPayment.save();
-        res.status(200).send({status:true, message: "Payment was made and logged successfully", data: payment});
-      }catch(error){
-        res.status(301).send({status:false, message: "Logging payment failed", data: error});
+      const recieptTemplate = getBaseUrl("template/reciept.html");
+      let html = fs.readFileSync(recieptTemplate, "utf8");
+      let tot = Number(req.body.purchasedUnit) + Number(paySummary[0]?.prevUnits)
+
+      var recieptData = {
+        recieptId: `FHGC-${payment?._id}`,
+        amount: amountFormat(payment?.amountPaid),
+        price: amountFormat(payment?.price),
+        date: simpleDateString(payment?.createdAt),
+        customerName: `${user?.firstName} ${user?.lastName}`,
+        qty: amountFormat(req.body.purchasedUnit),
+        price: amountFormat(req?.body?.price),
+        prevPurchase: amountFormat(paySummary[0]?.prevUnits),
+        totalPurchase: amountFormat(tot),
+        property: payment?.property?.name
 
       }
-  
+
+      console.log(recieptData);
+
+      var options = {
+        format: "A4",   
+        orientation: "portrait",
+        border: "10mm",
+      };
+      
+   
+
+      var document = {
+        html: html,
+        data: {
+          recieptData,
+        },
+        path: `./attachment/${payment?._id}.pdf`,
+        type: "",
+      };
+
+      pdf
+      .create(document, options)
+      .then((res) => {
+        // console.log(res);
+        const filePath = getBaseUrl(`attachment/${payment?._id}.pdf`)
+
+        mailgun()
+        .messages()
+        .send(
+          {
+            from: 'Florahomes <admin@florahomes99.com>',
+            to: `Ibrahim Olayioye <ibraphem@gmail.com>`,
+            subject: `Successful Payment`,
+            html: recieptEmailTemplate(recieptData?.customerName),
+            attachment: filePath?.pathname.substring(1)
+          },
+          (error, body) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(body);
+              fs.unlink(`./attachment/${payment?._id}.pdf`, (err) => {
+                if (err) {
+                  console.log(err);
+                    // throw err;
+                }
+            
+                console.log("Delete File successfully.");
+            });
+            }
+          }
+        );
+     
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+     
+      res.status(200).send({status:true, message: "Payment was made and logged successfully", data: payment});
       
     })
   );

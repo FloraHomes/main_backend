@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@200;300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Reciept</title>
+    <script src="https://use.fontawesome.com/ae73d93b52.js"></script>
+    <style>
+      body {
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Cambria", sans-serif;
+        font-size: 20px;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important; /* Chrome, Safari 6 – 15.3, Edge */
+        color-adjust: exact !important; /* Firefox 48 – 96 */
+        print-color-adjust: exact !important; /* Firefox 97+, Safari 15.4+ */
+      }
+
+      .reciept-container,
+      .agreement-container {
+        width: 90%;
+        margin: auto;
+      }
+
+      .agreement-container {
+        text-align: justify;
+        /* line-height: 30px; */
+      }
+
+      header {
+        width: 100%;
+        height: 400px;
+        background-image: url("https://res.cloudinary.com/djykib0gk/image/upload/v1671969011/misc/header_ejv8bg.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        position: relative;
+        margin: 5px 0 10px 0;
+      }
+
+      .overlay {
+        position: absolute;
+        left: 0;
+        background-color: #541484;
+        opacity: 0.9;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* padding: 0 60px; */
+        color: white;
+      }
+
+      .overlay img {
+        height: 80px;
+        margin-left: 50px;
+        /* width: 300px; */
+        /* width: 300px; */
+      }
+
+      .overlay h1 {
+        margin-right: 50px;
+        margin-top: 0;
+      }
+
+      .lead {
+        width: 100%;
+        height: 60px;
+        background: url("assets/jubilation.jpeg") no-repeat center;
+        background-size: cover;
+        position: relative;
+        border-top: 10px solid green;
+      }
+
+      .lead-overlay {
+        position: absolute;
+        left: 0;
+        background-color: rgb(17, 71, 17);
+        opacity: 0.9;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-center;
+        color: white;
+        font-size: 14px;
+      }
+
+      .lead-overlay p {
+        margin: auto;
+      }
+
+      section {
+        width: 100%;
+      }
+
+      section .check {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      section .check img {
+        /* margin: 20px 0 0 0; */
+        height: 100px;
+        width: 100px;
+      }
+
+      section .check p {
+        color: #cc0000;
+        font-weight: bold;
+      }
+
+      .details {
+        background-color: rgb(246, 239, 246);
+        padding: 10px;
+        line-height: 1.7em;
+      }
+
+      .details div {
+        display: flex;
+        /* justify-content: space-between; */
+        /* align-items: center; */
+        /* margin-bottom: 5px; */
+      }
+
+      .details div span {
+        /* font-weight: bold; */
+      }
+
+      .purpose {
+        border-top: 2px solid green;
+        border-bottom: 2px solid green;
+        display: flex;
+        margin: 30px 0;
+        align-items: center;
+        padding: 7px;
+        /* padding: ; */
+      }
+
+      .purpose .package {
+        font-weight: bold;
+        margin-left: 50px;
+      }
+
+      .table-div {
+        background-color: rgb(246, 239, 246);
+        margin-bottom: 100px;
+      }
+
+      table {
+        width: 100%;
+        margin-bottom: 30px;
+      }
+
+      thead {
+        background-color: #8064a2;
+        color: #fff;
+      }
+
+      th,
+      td {
+        padding: 10px;
+      }
+
+      .transanction-details {
+        display: flex;
+        width: 400px;
+        justify-content: space-between;
+        padding: 0 10px;
+        font-size: 15px;
+        font-style: italic;
+      }
+
+      .total {
+        display: flex;
+        justify-content: space-around;
+        background-color: #ede7f3;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      .total p {
+        margin: 5px;
+      }
+
+      hr {
+        height: 1px;
+        background: black;
+      }
+
+      footer {
+        background: #380d59;
+        display: flex;
+        justify-content: space-between;
+        color: white;
+        padding: 5px;
+        margin-top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- <div class="overlay">
+        <img src="assets/FHGClogo.png" alt="" />
+        <h1>E-RECIEPT</h1>
+      </div> -->
+    </header>
+    <div class="reciept-container">
+    
+      <!--  <div class="lead">
+        <div class="lead-overlay">
+          <p>
+            The Leading Online Property Verification and Real Estate Investment
+            Company...
+          </p>
+        </div>
+      </div> -->
+      <section>
+        <div class="check" style="text-align: center;">
+          <img src="https://res.cloudinary.com/djykib0gk/image/upload/v1671969007/misc/check_sz7pve.jpg" alt="" />
+          <p>Thank you for your patronage</p>
+        </div>
+        <p>Your <u>PURCHASE</u> transaction was <b>Approved</b>. View details below.</p>
+        <p>Status: <span>Verified</span></p>
+        <div class="details">
+          <div>
+            <span style="text-align: left;">Reciept Id: <b>{{recieptData.recieptId}}</b></span>
+            <span style="text-align: right; margin-left: 55%;">Date: <b>{{recieptData.date}}</b></span>
+          </div>
+          <div>
+            <span style="text-align: left;">Customer Name: <b>{{recieptData.customerName}}</b></span>
+          </div>
+      
+        </div>
+
+        <div class="purpose">
+          <span style="text-align: left;">PURPOSE OF PAYMENT</span>
+          <span style="text-align: right; margin-left: 30px;"><b>Owner-Earner Package</b></span>
+        </div>
+
+        <div class="table-div">
+          <table>
+            <thead>
+              <tr>
+                <th style="background-color: #5f497a;;">DESCRIPTION</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Payment for Own-Earner slot in the {{recieptData.property}}</td>
+                <td>20</td>
+                <td>&#8358;{{recieptData.price}}/unit</td>
+                <td>&#8358;{{recieptData.amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="line-height: 1.5em;">
+          <div class="transanction-details" >
+            <span style="width: 300px;">Previous units purchased:</span>
+            <span>{{recieptData.prevPurchase}} Units</span>
+          </div>
+          <div class="transanction-details">
+            <span style="width: 300px;">This Purchase:</span>
+            <span>{{recieptData.qty}} Units</span>
+          </div>
+          <div class="transanction-details" style="margin-bottom: 20px;">
+            <span style="width: 300px;">Total units purchased as at date:</span>
+              <span>{{recieptData.totalPurchase}} Units</span>
+          </div>
+        </div>
+          <div class="total">
+            <span style="text-align: left; margin-left: 50px;">TOTAL</span>
+              <span style="text-align: right; margin-left: 50px;">	&#8358;{{recieptData.amount}}</span>
+          </div>
+        </div>
+
+        <div style="width: 60%; margin: auto"><hr /></div>
+        <h3 style="text-align: center; margin-top: 2px">
+          AUTHORIZED SIGNATURE
+        </h3>
+      </section>
+      <!-- <footer>
+        <div class="left">
+          <i class="fa-light fa-globe"></i>
+          <p>www.florahomesgc.com</p>
+        </div>
+        <div class="right">
+          <div class="social">
+            <img src="" alt="" />
+          </div>
+          <p>@florahomesGC</p>
+        </div>
+      </footer> -->
+    </div>
+  </body>
+</html>

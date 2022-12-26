@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import mg from 'mailgun-js'
+import moment from 'moment';
 
 export const generateToken = (user) => {
     return jwt.sign(
@@ -42,6 +44,33 @@ export const generateToken = (user) => {
     
     return text;
   }
+
+  export const mailgun = () =>
+  mg({
+    apiKey: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMIAN,
+    
+  });
+
+  export const recieptEmailTemplate = (name) => {
+    return `<h3>Payment Reciept</h3>
+    <p>
+    Hi ${name},</p>
+    <p>Your payment is acknowledged. Please find the attached of your transaction receipt. Thank you for patnering with us</p>
+    <hr/>
+    <p>
+    Yours in Progress.
+    </p>
+    `;
+  };
+
+  export const amountFormat = (num) => {
+    return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export const simpleDateString = (date) => {
+  return date ? moment(date).format().replace(/T.+$/, '') : '';
+};
   
 
   // export const isAdmin = (req, res, next) => {
