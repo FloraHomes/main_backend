@@ -23,11 +23,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+app.use(cors());
 
 //routes
 app.use("/api/seed", seedRoutes);
@@ -51,8 +47,4 @@ app.listen(port, () => {
 export const getBaseUrl = (path) => {
   return new URL(path, import.meta.url);
 }
-
-const filePath = getBaseUrl(`attachment/jjfhfhfh.pdf`)
-
-console.log(filePath.pathname.substring(1));
 

@@ -95,8 +95,8 @@ paymentRoutes.post(
         .messages()
         .send(
           {
-            from: 'Florahomes <admin@florahomes99.com>',
-            to: `Ibrahim Olayioye <ibraphem@gmail.com>`,
+            from: 'Florahomes <admin@florahomes.com>',
+            to: `Ibrahim Olayioye <${user.email}>`,
             subject: `Successful Payment`,
             html: recieptEmailTemplate(recieptData?.customerName),
             attachment: filePath?.pathname.substring(1)
