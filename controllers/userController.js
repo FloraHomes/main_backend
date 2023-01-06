@@ -1,18 +1,11 @@
-import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-import { generateToken, isAuth } from "../utils.js";
-import { signIn } from "../controllers/userController.js";
+import { generateToken } from "../utils.js";
 
-const userRoutes = express.Router();
+export const signIn = async(req, res) => {
 
-userRoutes.post(
-  "/signin",
-  expressAsyncHandler(async (req, res) => {
-    console.log(req);
     const user = await User.findOne({ email: req.body.email });
-    // await user.populate('property');
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         res.send({
@@ -40,12 +33,12 @@ userRoutes.post(
     res
       .status(401)
       .send({ status: false, message: "Invalid email or password" });
-  })
-);
 
-userRoutes.post(
-  "/signup",
+};
+
+export const signup = () => {
   expressAsyncHandler(async (req, res) => {
+    return req
     const newUser = new User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -76,12 +69,10 @@ userRoutes.post(
       },
       message: "Authentication Successful",
     });
-  })
-);
+  });
+};
 
-userRoutes.put(
-  "/update",
-  isAuth,
+export const updateUser = () => {
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.body._id);
     if (user) {
@@ -118,7 +109,5 @@ userRoutes.put(
     } else {
       res.status(404).send({ status: false, message: "User Not Found" });
     }
-  })
-);
-
-export default userRoutes;
+  });
+};

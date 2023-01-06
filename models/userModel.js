@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
         isComplete: {type: Boolean, default: false, required: false},
         address: {type: String, required: false},
         photoUrl: {type: String, required: false},
+        idUploadUrl: {type: String, required: false},
         signatureUrl: {type: String, required: false},
         property: {
             type: mongoose.Schema.Types.ObjectId,

@@ -7,6 +7,7 @@ const propertySchema = new mongoose.Schema(
         currentPricePerUnit: {type: String, required: true},
         title: {type: String, required: true},
         area: {type: String, required: true},
+        unitsPerPlot: {type: String, required: true},
     },
     {
         timestamps: true

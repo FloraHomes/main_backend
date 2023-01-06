@@ -57,7 +57,6 @@ export const generateToken = (user) => {
     <p>
     Hi ${name},</p>
     <p>Your payment is acknowledged. Please find the attached of your transaction receipt. Thank you for patnering with us</p>
-    <hr/>
     <p>
     Yours in Progress.
     </p>

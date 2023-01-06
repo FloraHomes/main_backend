@@ -21,15 +21,11 @@ uploadRoutes.post("/", isAuth, async (req, res) => {
       },
 
       function (error, result) {
-        res
-          .status(200)
-          .send({ status: true, message: "Upload Successful", data: result });
+        res.send({ status: true, message: "Upload Successful", data: result });
       }
     );
   } catch (error) {
-    res
-      .status(200)
-      .send({ status: false, message: "Upload Failed", data: error });
+    res.send({ status: false, message: "Upload Failed", data: error });
   }
 });
 

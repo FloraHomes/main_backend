@@ -11,6 +11,7 @@ import propertyRoutes from "./routes/propertyRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import withdrawalRoutes from "./routes/withdrawalRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/properties", propertyRoutes);
 app.use("/api/goal", goalRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/category", categoryRoutes);
+app.use("/api/withdrawal", withdrawalRoutes);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

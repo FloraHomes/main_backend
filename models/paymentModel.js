@@ -5,6 +5,7 @@ const paymentSchema = new mongoose.Schema(
         amountPaid: {type: Number, required: true},
         purchasedUnit: {type: Number, required: true},
         price: {type: String, required: true},
+        source: {type: String, required: true},
         referenceId: {type: String, required: true, unique: true},
         property: {
             type: mongoose.Schema.Types.ObjectId,

@@ -4,19 +4,11 @@ export const users = [
     {
       firstName: "Ibrahim",
       lastName: "Akinola",
-      email: "ibraphem@outlook.com",
+      email: "ibraphem@femi.com",
       phone: "08077764909",
       password: bcrypt.hashSync('123456'),
       role: 'admin',
-    },
-    {
-      firstName: "Oluwafemi",
-      lastName: "Olayioye",
-      email: "ibraphem@gmail.com",
-      phone: "07031259185",
-      password: bcrypt.hashSync('123456'),
-      role: 'ownEarner',
-    },
+    }
   ]
 
   export const properties = [
@@ -26,6 +18,7 @@ export const users = [
         currentPricePerUnit: "20000",
         title: "Gazette",
         area: "Ibeju-Lekki",
+        unitsPerPlot: "648"
     },
     {
         name: "Flora City",
@@ -33,6 +26,7 @@ export const users = [
         currentPricePerUnit: "70000",
         title: "Govt. Excision",
         area: "Oju Agbe",
+        unitsPerPlot: "500"
     },
 
 ]

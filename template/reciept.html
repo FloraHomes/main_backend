@@ -240,7 +240,7 @@
         <div class="details">
           <div>
             <span style="text-align: left;">Reciept Id: <b>{{recieptData.recieptId}}</b></span>
-            <span style="text-align: right; margin-left: 55%;">Date: <b>{{recieptData.date}}</b></span>
+            <span style="text-align: right; margin-left: 50px;">Date: <b>{{recieptData.date}}</b></span>
           </div>
           <div>
             <span style="text-align: left;">Customer Name: <b>{{recieptData.customerName}}</b></span>
@@ -249,8 +249,11 @@
         </div>
 
         <div class="purpose">
-          <span style="text-align: left;">PURPOSE OF PAYMENT</span>
-          <span style="text-align: right; margin-left: 30px;"><b>Owner-Earner Package</b></span>
+          <span style="text-align: left;">PURPOSE:</span>
+          <span style="text-align: right; margin-left: 5px;"><b>Owner-Earner Package</b></span>
+          <span style="margin-left: 20px;">||</span>
+          <span style="text-align: left; margin-left: 20px">SOURCE:</span>
+          <span style="text-align: right; margin-left: 5px;"><b>{{recieptData.source}}</b></span>
         </div>
 
         <div class="table-div">
@@ -266,7 +269,7 @@
             <tbody>
               <tr>
                 <td>Payment for Own-Earner slot in the {{recieptData.property}}</td>
-                <td>20</td>
+                <td>{{recieptData.qty}}</td>
                 <td>&#8358;{{recieptData.price}}/unit</td>
                 <td>&#8358;{{recieptData.amount}}</td>
               </tr>
