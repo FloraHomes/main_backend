@@ -18,7 +18,7 @@ dotenv.config();
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("connected to DB"))
-  .catch((err) => console.log(err.message));
+  .catch((err) => console.log("databaseee errorrrrr", err.message));
 // app.use(express.urlencoded({extended: true}))
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -48,5 +48,4 @@ app.listen(port, () => {
 
 export const getBaseUrl = (path) => {
   return new URL(path, import.meta.url);
-}
-
+};
